@@ -29,6 +29,13 @@ const Header = () => {
     { ru: 'Курсы', en: 'Courses', path: '/courses' },
     { ru: 'Блог', en: 'Blog', path: '/blog' },
     { ru: 'Отзывы', en: 'Reviews', path: '/reviews' },
+    { ru: 'О нас', en: 'About', path: '/about' },
+  ];
+
+  const socials = [
+    { name: 'ВКонтакте', icon: 'Share2', url: '#' },
+    { name: 'Телеграм', icon: 'Send', url: '#' },
+    { name: 'MAX', icon: 'MessageCircle', url: '#' },
   ];
 
   const handleCartOpen = () => {
@@ -60,6 +67,15 @@ const Header = () => {
             </Link>
           ))}
         </nav>
+
+        <div className="hidden md:flex items-center gap-3 mr-2">
+          {socials.map((s) => (
+            <a key={s.name} href={s.url} aria-label={s.name}
+               className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-beige-soft transition-colors">
+              <Icon name={s.icon} size={15} />
+            </a>
+          ))}
+        </div>
 
         <div className="flex items-center gap-1">
           {/* Поиск */}
