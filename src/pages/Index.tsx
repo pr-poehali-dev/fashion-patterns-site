@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,12 @@ import { patterns, categories } from '@/data/catalog';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/550ca72b-9ea7-4988-8f97-c095433cb581.jpg';
 const CARD_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/386737f5-0484-442b-a2b3-28b464fa956c.jpg';
+
+const IMG_COURSES  = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/4edd3012-ef60-47d5-8272-232f12db03a9.jpg';
+const IMG_BLOG     = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/87c6cced-97b0-4768-bba3-21f35c8738b2.jpg';
+const IMG_REVIEWS  = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/10c07459-7fee-40c8-87c0-e4069002285a.jpg';
+const IMG_ABOUT    = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/c81b28f6-3f58-4893-be15-71b8509459f4.jpg';
+const IMG_ARTICLES = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/eafd0f0f-b3ad-4233-b7f0-1762fcd63da0.jpg';
 
 const Index = () => {
   const { t, lang, addToCart, user } = useApp();
@@ -100,6 +106,83 @@ const Index = () => {
           </div>
         )}
       </section>
+
+      {/* Промо-секции */}
+      {[
+        {
+          title_ru: 'Курсы',
+          title_en: 'Courses',
+          sub_ru: 'Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.',
+          sub_en: 'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.',
+          btn_ru: 'Смотреть курсы',
+          btn_en: 'View courses',
+          path: '/courses',
+          img: IMG_COURSES,
+          reverse: false,
+        },
+        {
+          title_ru: 'Блог',
+          title_en: 'Blog',
+          sub_ru: 'О моде, мероприятиях, конкурсах и показах — всё самое интересное из мира одежды.',
+          sub_en: 'About fashion, events, contests and runway shows — the best from the world of clothing.',
+          btn_ru: 'Читать блог',
+          btn_en: 'Read blog',
+          path: '/blog',
+          img: IMG_BLOG,
+          reverse: true,
+        },
+        {
+          title_ru: 'Отзывы',
+          title_en: 'Reviews',
+          sub_ru: 'Что говорят те, кто уже шьёт по нашим лекалам.',
+          sub_en: 'What those who already sew with our patterns say.',
+          btn_ru: 'Смотреть отзывы',
+          btn_en: 'See reviews',
+          path: '/reviews',
+          img: IMG_REVIEWS,
+          reverse: false,
+        },
+        {
+          title_ru: 'О нас',
+          title_en: 'About us',
+          sub_ru: 'Miroviriastudio — студия лекал, созданная швеями для швей. 8 лет с вами, 12 000 довольных клиентов.',
+          sub_en: 'Miroviriastudio — a pattern studio created by makers for makers. 8 years with you, 12 000 happy clients.',
+          btn_ru: 'Узнать больше',
+          btn_en: 'Learn more',
+          path: '/about',
+          img: IMG_ABOUT,
+          reverse: true,
+        },
+        {
+          title_ru: 'Статьи',
+          title_en: 'Articles',
+          sub_ru: 'Полезные материалы для тех, кто шьёт: выбор ткани, уход за изделиями, припуски и многое другое.',
+          sub_en: 'Useful materials for those who sew: fabric choice, garment care, seam allowances and more.',
+          btn_ru: 'Все статьи',
+          btn_en: 'All articles',
+          path: '/articles',
+          img: IMG_ARTICLES,
+          reverse: false,
+        },
+      ].map((s) => (
+        <section key={s.path} className="container py-16 md:py-20">
+          <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${s.reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-beige-soft">
+              <img src={s.img} alt={t(s.title_ru, s.title_en)} className="w-full h-full object-cover hover-scale" />
+            </div>
+            <div>
+              <h2 className="font-display text-5xl md:text-6xl mb-4">{t(s.title_ru, s.title_en)}</h2>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-8">{t(s.sub_ru, s.sub_en)}</p>
+              <Button asChild size="lg">
+                <Link to={s.path}>
+                  {t(s.btn_ru, s.btn_en)}
+                  <Icon name="ArrowRight" size={18} className="ml-2" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      ))}
     </Layout>
   );
 };
