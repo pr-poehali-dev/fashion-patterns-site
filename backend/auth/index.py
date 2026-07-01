@@ -307,25 +307,28 @@ def handler(event: dict, context) -> dict:
             'body': '',
         }
 
-    raw_path = event.get('path', '')
-    # Normalize path: strip any leading function-id prefix and keep only the last segment
-    # e.g. '/d4ele9fcvodhsq3k3tqq/register' -> '/register'
-    parts = [p for p in raw_path.split('/') if p]
-    known_routes = {'register', 'login', 'logout', 'me'}
-    if parts and parts[-1] in known_routes:
-        path = '/' + parts[-1]
-    else:
-        path = raw_path
-
     method = (event.get('httpMethod') or '').upper()
 
-    if path == '/register' and method == 'POST':
+    # Определяем action: из тела запроса или из query-параметра
+    body_raw = event.get('body') or {}
+    if isinstance(body_raw, str):
+        try:
+            body_parsed = json.loads(body_raw)
+        except Exception:
+            body_parsed = {}
+    else:
+        body_parsed = body_raw
+
+    query = event.get('queryStringParameters') or {}
+    action = body_parsed.get('action') or query.get('action') or ''
+
+    if action == 'register':
         return register(event)
-    elif path == '/login' and method == 'POST':
+    elif action == 'login':
         return login(event)
-    elif path == '/logout' and method == 'POST':
+    elif action == 'logout':
         return logout(event)
-    elif path == '/me' and method == 'GET':
+    elif action == 'me':
         return me(event)
     else:
-        return respond(404, {'error': f'Route {method} {path} not found'})
+        return respond(400, {'error': 'Unknown action. Use: register, login, logout, me'})

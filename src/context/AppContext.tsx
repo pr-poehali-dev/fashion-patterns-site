@@ -44,7 +44,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const sid = localStorage.getItem(SESSION_KEY);
     if (!sid) { setAuthLoading(false); return; }
-    fetch(`${AUTH_URL}/me`, { headers: { 'X-Session-Id': sid } })
+    fetch(`${AUTH_URL}?action=me`, { headers: { 'X-Session-Id': sid } })
       .then((r) => r.json())
       .then((data) => {
         if (data.user) {
@@ -74,9 +74,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     if (sessionId) {
-      await fetch(`${AUTH_URL}/logout`, {
+      await fetch(AUTH_URL, {
         method: 'POST',
-        headers: { 'X-Session-Id': sessionId },
+        headers: { 'Content-Type': 'application/json', 'X-Session-Id': sessionId },
+        body: JSON.stringify({ action: 'logout' }),
       }).catch(() => {});
     }
     setUser(null);

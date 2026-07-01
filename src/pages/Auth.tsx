@@ -29,10 +29,10 @@ const Auth = () => {
 
     try {
       const body = tab === 'register'
-        ? { email, password, name }
-        : { email, password };
+        ? { action: 'register', email, password, name }
+        : { action: 'login', email, password };
 
-      const res = await fetch(`${AUTH_URL}/${tab}`, {
+      const res = await fetch(AUTH_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
