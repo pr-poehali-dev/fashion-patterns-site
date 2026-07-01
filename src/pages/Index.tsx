@@ -76,7 +76,7 @@ const Index = () => {
           {shown.map((p) => (
             <div key={p.id} className="group">
               <div className="aspect-[3/4] rounded-lg overflow-hidden bg-beige-soft mb-3 relative">
-                <img src={CARD_IMG} alt={t(p.name, p.nameEn)} className="w-full h-full object-cover hover-scale" />
+                <img src={p.image ?? CARD_IMG} alt={t(p.name, p.nameEn)} className="w-full h-full object-cover hover-scale" />
                 <Button
                   size="sm"
                   className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"

@@ -7,6 +7,7 @@ export interface Pattern {
   price: number;
   difficulty: string;
   difficultyEn: string;
+  image?: string;
 }
 
 export const categories = [
@@ -21,10 +22,10 @@ export const categories = [
 ];
 
 export const patterns: Pattern[] = [
-  { id: 1, name: 'Платье «Мадлен»', nameEn: 'Madeleine Dress', category: 'Платья', categoryEn: 'Dresses', price: 690, difficulty: 'Средне', difficultyEn: 'Medium' },
-  { id: 2, name: 'Платье-комбинация', nameEn: 'Slip Dress', category: 'Платья', categoryEn: 'Dresses', price: 590, difficulty: 'Легко', difficultyEn: 'Easy' },
-  { id: 3, name: 'Платье-рубашка', nameEn: 'Shirt Dress', category: 'Платья', categoryEn: 'Dresses', price: 740, difficulty: 'Сложно', difficultyEn: 'Hard' },
-  { id: 4, name: 'Летнее платье «Луара»', nameEn: 'Loire Summer Dress', category: 'Платья', categoryEn: 'Dresses', price: 650, difficulty: 'Средне', difficultyEn: 'Medium' },
+  { id: 1, name: 'Платье «Мадлен»', nameEn: 'Madeleine Dress', category: 'Платья', categoryEn: 'Dresses', price: 690, difficulty: 'Средне', difficultyEn: 'Medium', image: 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/bucket/d84e5379-1364-46af-91ee-50f310e79626.png' },
+  { id: 2, name: 'Платье-комбинация', nameEn: 'Slip Dress', category: 'Платья', categoryEn: 'Dresses', price: 590, difficulty: 'Легко', difficultyEn: 'Easy', image: 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/bucket/79443bcd-ecbd-4c56-aacd-9555770e9bf9.png' },
+  { id: 3, name: 'Платье-рубашка', nameEn: 'Shirt Dress', category: 'Платья', categoryEn: 'Dresses', price: 740, difficulty: 'Сложно', difficultyEn: 'Hard', image: 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/bucket/fb4c2d06-301e-4a9c-9533-edacce6961b1.png' },
+  { id: 4, name: 'Летнее платье «Луара»', nameEn: 'Loire Summer Dress', category: 'Платья', categoryEn: 'Dresses', price: 650, difficulty: 'Средне', difficultyEn: 'Medium', image: 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/bucket/39b84d6c-99b3-4d52-8fc0-d59f6b50a257.png' },
   { id: 5, name: 'Базовая футболка', nameEn: 'Basic Tee', category: 'Футболки', categoryEn: 'T-shirts', price: 390, difficulty: 'Легко', difficultyEn: 'Easy' },
   { id: 6, name: 'Футболка оверсайз', nameEn: 'Oversize Tee', category: 'Футболки', categoryEn: 'T-shirts', price: 420, difficulty: 'Легко', difficultyEn: 'Easy' },
   { id: 7, name: 'Футболка с рукавом ¾', nameEn: 'Tee 3/4 Sleeve', category: 'Футболки', categoryEn: 'T-shirts', price: 450, difficulty: 'Легко', difficultyEn: 'Easy' },
