@@ -54,13 +54,28 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="container flex items-center justify-between py-4 gap-4">
-        <Link to="/" className="flex items-baseline shrink-0">
-          <span className="text-2xl font-semibold tracking-tight">Miroviria</span>
-          <span className="text-xs font-medium tracking-tight">studio</span>
-        </Link>
+      <div className="container flex items-center py-4 gap-4">
+        {/* Левая часть: логотип + соцсети */}
+        <div className="flex items-center gap-5 shrink-0">
+          <Link to="/" className="flex items-baseline">
+            <span className="text-2xl font-semibold tracking-tight">Miroviria</span>
+            <span className="text-xs font-medium tracking-tight">studio</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-4">
+            {socials.map((s) => (
+              <a key={s.name} href={s.url} aria-label={s.name}
+                 className="flex flex-col items-center gap-1 group">
+                <span className="w-7 h-7 rounded-full border border-border flex items-center justify-center group-hover:bg-beige-soft transition-colors">
+                  <Icon name={s.icon} size={13} />
+                </span>
+                <span className="text-[10px] text-muted-foreground leading-none">{s.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm">
+        {/* Центральная навигация */}
+        <nav className="hidden md:flex items-center gap-8 text-sm flex-1 justify-center">
           {nav.map((item) => (
             <Link key={item.en} to={item.path} className="story-link hover:opacity-60 transition-opacity">
               {t(item.ru, item.en)}
@@ -68,16 +83,7 @@ const Header = () => {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3 mr-2">
-          {socials.map((s) => (
-            <a key={s.name} href={s.url} aria-label={s.name}
-               className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-beige-soft transition-colors">
-              <Icon name={s.icon} size={15} />
-            </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 shrink-0">
           {/* Поиск */}
           <Dialog>
             <DialogTrigger asChild>
