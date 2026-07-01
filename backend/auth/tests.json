@@ -1,0 +1,1 @@
+{"tests": [{"name": "Health check", "method": "GET", "path": "/me", "expectedStatus": 400, "bodyMatcher": "partial"}]}

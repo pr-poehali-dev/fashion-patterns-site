@@ -13,9 +13,9 @@ import { Input } from '@/components/ui/input';
 import { patterns } from '@/data/catalog';
 
 const Header = () => {
-  const { lang, toggleLang, t, cart, removeFromCart, user, login, logout } = useApp();
+  const { lang, toggleLang, t, cart, removeFromCart, user, logout, authLoading } = useApp();
   const [search, setSearch] = useState('');
-  const [email, setEmail] = useState('');
+  const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
 
   const results = search.trim()
@@ -30,6 +30,14 @@ const Header = () => {
     { ru: 'Блог', en: 'Blog', path: '/blog' },
     { ru: 'Отзывы', en: 'Reviews', path: '/reviews' },
   ];
+
+  const handleCartOpen = () => {
+    if (!user) {
+      navigate('/auth?redirect=/');
+      return;
+    }
+    setCartOpen(true);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -89,40 +97,45 @@ const Header = () => {
           </Button>
 
           {/* Личный кабинет */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon"><Icon name="User" size={20} /></Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle className="font-display text-2xl">
-                  {user ? t('Личный кабинет', 'Account') : t('Вход', 'Sign in')}
-                </DialogTitle>
-              </DialogHeader>
-              {user ? (
+          {authLoading ? (
+            <Button variant="ghost" size="icon" disabled>
+              <Icon name="Loader2" size={18} className="animate-spin" />
+            </Button>
+          ) : user ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <div className="w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-semibold">
+                    {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
+                  </div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="font-display text-2xl">{t('Личный кабинет', 'Account')}</DialogTitle>
+                </DialogHeader>
                 <div className="space-y-4">
-                  <p className="text-sm">{t('Вы вошли как', 'Signed in as')} <b>{user.email}</b></p>
+                  <div className="p-4 bg-beige-soft rounded-lg">
+                    <p className="font-medium">{user.name}</p>
+                    <p className="text-sm text-muted-foreground">{user.email}</p>
+                  </div>
                   <Button variant="outline" className="w-full" onClick={logout}>
+                    <Icon name="LogOut" size={16} className="mr-2" />
                     {t('Выйти', 'Sign out')}
                   </Button>
                 </div>
-              ) : (
-                <form
-                  className="space-y-3"
-                  onSubmit={(e) => { e.preventDefault(); if (email) login(email); }}
-                >
-                  <Input type="email" placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                  <Input type="password" placeholder={t('Пароль', 'Password')} required />
-                  <Button type="submit" className="w-full">{t('Войти', 'Sign in')}</Button>
-                </form>
-              )}
-            </DialogContent>
-          </Dialog>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Button variant="ghost" size="icon" onClick={() => navigate('/auth')}>
+              <Icon name="User" size={20} />
+            </Button>
+          )}
 
           {/* Корзина */}
-          <Sheet>
+          <Sheet open={cartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative" onClick={handleCartOpen}>
                 <Icon name="ShoppingBag" size={20} />
                 {cart.length > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
@@ -136,13 +149,17 @@ const Header = () => {
                 <SheetTitle className="font-display text-2xl">{t('Корзина', 'Cart')}</SheetTitle>
               </SheetHeader>
               <div className="mt-6 space-y-4">
-                {cart.length === 0 && <p className="text-sm text-muted-foreground">{t('Корзина пуста', 'Cart is empty')}</p>}
+                {cart.length === 0 && (
+                  <p className="text-sm text-muted-foreground">{t('Корзина пуста', 'Cart is empty')}</p>
+                )}
                 {cart.map((item) => (
                   <div key={item.id} className="flex justify-between items-center text-sm">
                     <span>{item.name}</span>
                     <div className="flex items-center gap-3">
                       <span className="text-muted-foreground">{item.price} ₽</span>
-                      <button onClick={() => removeFromCart(item.id)}><Icon name="X" size={16} /></button>
+                      <button onClick={() => removeFromCart(item.id)}>
+                        <Icon name="X" size={16} />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -162,7 +179,9 @@ const Header = () => {
           {/* Мобильное меню */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden"><Icon name="Menu" size={20} /></Button>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Icon name="Menu" size={20} />
+              </Button>
             </SheetTrigger>
             <SheetContent side="left">
               <nav className="mt-10 flex flex-col gap-5 text-lg">

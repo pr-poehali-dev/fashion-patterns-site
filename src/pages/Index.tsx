@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,8 @@ const HERO_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354
 const CARD_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/386737f5-0484-442b-a2b3-28b464fa956c.jpg';
 
 const Index = () => {
-  const { t, lang, addToCart } = useApp();
+  const { t, lang, addToCart, user } = useApp();
+  const navigate = useNavigate();
   const [active, setActive] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
 
@@ -72,7 +74,10 @@ const Index = () => {
                 <Button
                   size="sm"
                   className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-                  onClick={() => addToCart({ id: p.id, name: t(p.name, p.nameEn), price: p.price })}>
+                  onClick={() => {
+                    if (!user) { navigate('/auth?redirect=/'); return; }
+                    addToCart({ id: p.id, name: t(p.name, p.nameEn), price: p.price });
+                  }}>
                   <Icon name="Plus" size={16} className="mr-1" /> {t('В корзину', 'Add')}
                 </Button>
               </div>
