@@ -27,6 +27,7 @@ export default {
 					DEFAULT: 'hsl(var(--beige))',
 					soft: 'hsl(var(--beige-soft))'
 				},
+				sky: 'hsl(var(--sky))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

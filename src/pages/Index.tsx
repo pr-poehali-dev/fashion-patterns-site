@@ -11,8 +11,10 @@ const CARD_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354
 const Index = () => {
   const { t, lang, addToCart } = useApp();
   const [active, setActive] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState(false);
 
-  const shown = active ? patterns.filter((p) => p.category === active) : patterns;
+  const filtered = active ? patterns.filter((p) => p.category === active) : patterns;
+  const shown = expanded ? filtered : filtered.slice(0, 8);
 
   return (
     <Layout>
@@ -42,20 +44,20 @@ const Index = () => {
       <section id="catalog" className="container scroll-mt-32 py-12">
         <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
           <h2 className="font-display text-4xl md:text-5xl">{t('Каталог выкроек', 'Pattern catalog')}</h2>
-          <span className="text-sm text-muted-foreground">{shown.length} {t('моделей', 'models')}</span>
+          <span className="text-sm text-muted-foreground">{filtered.length} {t('моделей', 'models')}</span>
         </div>
 
         {/* Фильтр по категориям */}
         <div className="flex flex-wrap gap-2 mb-10">
           <button
-            onClick={() => setActive(null)}
+            onClick={() => { setActive(null); setExpanded(false); }}
             className={`px-4 py-2 rounded-full text-sm border transition-colors ${!active ? 'bg-foreground text-background border-foreground' : 'border-border hover:bg-beige-soft'}`}>
             {t('Все', 'All')}
           </button>
           {categories.map((c) => (
             <button
               key={c.en}
-              onClick={() => setActive(c.ru)}
+              onClick={() => { setActive(c.ru); setExpanded(false); }}
               className={`px-4 py-2 rounded-full text-sm border transition-colors ${active === c.ru ? 'bg-foreground text-background border-foreground' : 'border-border hover:bg-beige-soft'}`}>
               {lang === 'ru' ? c.ru : c.en}
             </button>
@@ -83,6 +85,15 @@ const Index = () => {
             </div>
           ))}
         </div>
+
+        {!expanded && filtered.length > 8 && (
+          <div className="flex justify-center mt-12">
+            <Button variant="outline" size="lg" onClick={() => setExpanded(true)} className="group">
+              {t('Ещё', 'More')}
+              <Icon name="ChevronDown" size={18} className="ml-1 group-hover:translate-y-0.5 transition-transform" />
+            </Button>
+          </div>
+        )}
       </section>
     </Layout>
   );

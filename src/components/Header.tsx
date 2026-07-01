@@ -33,8 +33,8 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      <div className="bg-beige-soft text-center py-2 text-sm">
-        <Link to="/payment" className="story-link hover:opacity-70 transition-opacity">
+      <div className="bg-sky text-white text-center py-2 text-sm">
+        <Link to="/payment" className="story-link hover:opacity-80 transition-opacity">
           {t('Как оплатить иностранной картой', 'How to pay with a foreign card')}
         </Link>
       </div>

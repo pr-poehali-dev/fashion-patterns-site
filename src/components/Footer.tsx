@@ -19,7 +19,7 @@ const Footer = () => {
 
   const socials = [
     { name: 'ВКонтакте', icon: 'Share2', url: '#' },
-    { name: 'Telegram', icon: 'Send', url: '#' },
+    { name: 'Телеграм', icon: 'Send', url: '#' },
     { name: 'MAX', icon: 'MessageCircle', url: '#' },
   ];
 
@@ -35,11 +35,14 @@ const Footer = () => {
             {t('Лекала и выкройки одежды для домашнего и профессионального шитья.',
                'Clothing patterns for home and professional sewing.')}
           </p>
-          <div className="flex gap-3 mt-6">
+          <div className="flex gap-6 mt-6">
             {socials.map((s) => (
               <a key={s.name} href={s.url} aria-label={s.name}
-                 className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-beige transition-colors">
-                <Icon name={s.icon} size={18} />
+                 className="flex flex-col items-center gap-2 group">
+                <span className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover:bg-beige transition-colors">
+                  <Icon name={s.icon} size={18} />
+                </span>
+                <span className="text-xs text-muted-foreground">{s.name}</span>
               </a>
             ))}
           </div>
