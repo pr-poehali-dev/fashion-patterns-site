@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "List patterns",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"patterns": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create pattern without admin session",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Test", "category": "Тест"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Update without id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"name": "Test"},
+      "expectedStatus": 400,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Delete without id",
+      "method": "DELETE",
+      "path": "/",
+      "expectedStatus": 400,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

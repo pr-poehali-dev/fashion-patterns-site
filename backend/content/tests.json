@@ -1,0 +1,51 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Unknown resource",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "List reviews",
+      "method": "GET",
+      "path": "/?resource=reviews",
+      "expectedStatus": 200,
+      "expectedBody": {"reviews": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "List posts",
+      "method": "GET",
+      "path": "/?resource=posts",
+      "expectedStatus": 200,
+      "expectedBody": {"posts": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "List texts",
+      "method": "GET",
+      "path": "/?resource=texts",
+      "expectedStatus": 200,
+      "expectedBody": {"texts": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create review without admin session",
+      "method": "POST",
+      "path": "/?resource=reviews",
+      "body": {"name": "Test", "textRu": "Текст"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

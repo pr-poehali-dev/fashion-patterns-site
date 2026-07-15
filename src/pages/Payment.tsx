@@ -2,9 +2,11 @@ import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import Icon from '@/components/ui/icon';
 import { useApp } from '@/context/AppContext';
+import { useSiteTexts } from '@/hooks/useSiteTexts';
 
 const Payment = () => {
-  const { t } = useApp();
+  const { t, lang } = useApp();
+  const { tx } = useSiteTexts();
 
   const steps = [
     { ru: 'Выберите выкройки и добавьте их в корзину.', en: 'Choose patterns and add them to the cart.' },
@@ -18,8 +20,8 @@ const Payment = () => {
     <Layout>
       <PageHero
         title={t('Оплата иностранной картой', 'Pay with a foreign card')}
-        subtitle={t('Принимаем карты, выпущенные за пределами России. Это просто и безопасно.',
-                    'We accept cards issued outside Russia. It is simple and secure.')}
+        subtitle={tx('payment_subtitle', 'Принимаем карты, выпущенные за пределами России. Это просто и безопасно.',
+                    'We accept cards issued outside Russia. It is simple and secure.', lang)}
       />
       <section className="container py-16 max-w-2xl">
         <ol className="space-y-6">

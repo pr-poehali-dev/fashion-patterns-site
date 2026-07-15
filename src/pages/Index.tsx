@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
-import { patterns, categories } from '@/data/catalog';
+import { useSiteTexts } from '@/hooks/useSiteTexts';
+import { categories } from '@/data/catalog';
+import { CATALOG_URL, Pattern } from '@/lib/adminApi';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/550ca72b-9ea7-4988-8f97-c095433cb581.jpg';
 const CARD_IMG = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-65354769b9de/files/386737f5-0484-442b-a2b3-28b464fa956c.jpg';
@@ -17,12 +19,64 @@ const IMG_ARTICLES = 'https://cdn.poehali.dev/projects/e17c8537-264f-4315-8738-6
 
 const Index = () => {
   const { t, lang, addToCart, user } = useApp();
+  const { tx } = useSiteTexts();
   const navigate = useNavigate();
   const [active, setActive] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [patterns, setPatterns] = useState<Pattern[]>([]);
+
+  useEffect(() => {
+    fetch(CATALOG_URL)
+      .then((r) => r.json())
+      .then((data) => setPatterns(data.patterns || []))
+      .catch(() => {});
+  }, []);
 
   const filtered = active ? patterns.filter((p) => p.category === active) : patterns;
   const shown = expanded ? filtered : filtered.slice(0, 8);
+
+  const promos = [
+    {
+      title_ru: 'Курсы', title_en: 'Courses',
+      sub_ru: tx('promo_courses_sub', 'Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.', 'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.', 'ru'),
+      sub_en: tx('promo_courses_sub', 'Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.', 'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.', 'en'),
+      btn_ru: tx('promo_courses_btn', 'Смотреть курсы', 'View courses', 'ru'),
+      btn_en: tx('promo_courses_btn', 'Смотреть курсы', 'View courses', 'en'),
+      path: '/courses', img: IMG_COURSES, reverse: false,
+    },
+    {
+      title_ru: 'Блог', title_en: 'Blog',
+      sub_ru: tx('promo_blog_sub', 'О моде, мероприятиях, конкурсах и показах — всё самое интересное из мира одежды.', 'About fashion, events, contests and runway shows — the best from the world of clothing.', 'ru'),
+      sub_en: tx('promo_blog_sub', 'О моде, мероприятиях, конкурсах и показах — всё самое интересное из мира одежды.', 'About fashion, events, contests and runway shows — the best from the world of clothing.', 'en'),
+      btn_ru: tx('promo_blog_btn', 'Читать блог', 'Read blog', 'ru'),
+      btn_en: tx('promo_blog_btn', 'Читать блог', 'Read blog', 'en'),
+      path: '/blog', img: IMG_BLOG, reverse: true,
+    },
+    {
+      title_ru: 'Отзывы', title_en: 'Reviews',
+      sub_ru: tx('promo_reviews_sub', 'Что говорят те, кто уже шьёт по нашим лекалам.', 'What those who already sew with our patterns say.', 'ru'),
+      sub_en: tx('promo_reviews_sub', 'Что говорят те, кто уже шьёт по нашим лекалам.', 'What those who already sew with our patterns say.', 'en'),
+      btn_ru: tx('promo_reviews_btn', 'Смотреть отзывы', 'See reviews', 'ru'),
+      btn_en: tx('promo_reviews_btn', 'Смотреть отзывы', 'See reviews', 'en'),
+      path: '/reviews', img: IMG_REVIEWS, reverse: false,
+    },
+    {
+      title_ru: 'О нас', title_en: 'About us',
+      sub_ru: tx('promo_about_sub', 'Miroviriastudio — студия лекал, созданная швеями для швей. 8 лет с вами, 12 000 довольных клиентов.', 'Miroviriastudio — a pattern studio created by makers for makers. 8 years with you, 12 000 happy clients.', 'ru'),
+      sub_en: tx('promo_about_sub', 'Miroviriastudio — студия лекал, созданная швеями для швей. 8 лет с вами, 12 000 довольных клиентов.', 'Miroviriastudio — a pattern studio created by makers for makers. 8 years with you, 12 000 happy clients.', 'en'),
+      btn_ru: tx('promo_about_btn', 'Узнать больше', 'Learn more', 'ru'),
+      btn_en: tx('promo_about_btn', 'Узнать больше', 'Learn more', 'en'),
+      path: '/about', img: IMG_ABOUT, reverse: true,
+    },
+    {
+      title_ru: 'Статьи', title_en: 'Articles',
+      sub_ru: tx('promo_articles_sub', 'Полезные материалы для тех, кто шьёт: выбор ткани, уход за изделиями, припуски и многое другое.', 'Useful materials for those who sew: fabric choice, garment care, seam allowances and more.', 'ru'),
+      sub_en: tx('promo_articles_sub', 'Полезные материалы для тех, кто шьёт: выбор ткани, уход за изделиями, припуски и многое другое.', 'Useful materials for those who sew: fabric choice, garment care, seam allowances and more.', 'en'),
+      btn_ru: tx('promo_articles_btn', 'Все статьи', 'All articles', 'ru'),
+      btn_en: tx('promo_articles_btn', 'Все статьи', 'All articles', 'en'),
+      path: '/articles', img: IMG_ARTICLES, reverse: false,
+    },
+  ];
 
   return (
     <Layout>
@@ -30,17 +84,16 @@ const Index = () => {
       <section className="container grid md:grid-cols-2 gap-10 items-center py-16 md:py-24">
         <div className="animate-fade-in">
           <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground mb-4">
-            {t('Лекала · Выкройки · Курсы', 'Patterns · Templates · Courses')}
+            {tx('index_hero_tag', 'Лекала · Выкройки · Курсы', 'Patterns · Templates · Courses', lang)}
           </p>
           <h1 className="font-display text-5xl md:text-7xl leading-[0.95] mb-6">
-            {t('Создавай одежду своей мечты', 'Sew the clothes of your dreams')}
+            {tx('index_hero_title', 'Создавай одежду своей мечты', 'Sew the clothes of your dreams', lang)}
           </h1>
           <p className="text-muted-foreground text-lg max-w-md mb-8">
-            {t('Профессиональные выкройки с подробными инструкциями. От футболки до пальто.',
-               'Professional patterns with detailed instructions. From a tee to a coat.')}
+            {tx('index_hero_desc', 'Профессиональные выкройки с подробными инструкциями. От футболки до пальто.', 'Professional patterns with detailed instructions. From a tee to a coat.', lang)}
           </p>
           <Button size="lg" asChild>
-            <a href="#catalog">{t('Смотреть каталог', 'Browse catalog')}</a>
+            <a href="#catalog">{tx('index_hero_button', 'Смотреть каталог', 'Browse catalog', lang)}</a>
           </Button>
         </div>
         <div className="aspect-square rounded-lg overflow-hidden bg-beige-soft animate-fade-in">
@@ -51,7 +104,7 @@ const Index = () => {
       {/* Каталог */}
       <section id="catalog" className="container scroll-mt-32 py-12">
         <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
-          <h2 className="font-display text-4xl md:text-5xl">{t('Каталог выкроек', 'Pattern catalog')}</h2>
+          <h2 className="font-display text-4xl md:text-5xl">{tx('index_catalog_title', 'Каталог выкроек', 'Pattern catalog', lang)}</h2>
           <span className="text-sm text-muted-foreground">{filtered.length} {t('моделей', 'models')}</span>
         </div>
 
@@ -108,63 +161,7 @@ const Index = () => {
       </section>
 
       {/* Промо-секции */}
-      {[
-        {
-          title_ru: 'Курсы',
-          title_en: 'Courses',
-          sub_ru: 'Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.',
-          sub_en: 'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.',
-          btn_ru: 'Смотреть курсы',
-          btn_en: 'View courses',
-          path: '/courses',
-          img: IMG_COURSES,
-          reverse: false,
-        },
-        {
-          title_ru: 'Блог',
-          title_en: 'Blog',
-          sub_ru: 'О моде, мероприятиях, конкурсах и показах — всё самое интересное из мира одежды.',
-          sub_en: 'About fashion, events, contests and runway shows — the best from the world of clothing.',
-          btn_ru: 'Читать блог',
-          btn_en: 'Read blog',
-          path: '/blog',
-          img: IMG_BLOG,
-          reverse: true,
-        },
-        {
-          title_ru: 'Отзывы',
-          title_en: 'Reviews',
-          sub_ru: 'Что говорят те, кто уже шьёт по нашим лекалам.',
-          sub_en: 'What those who already sew with our patterns say.',
-          btn_ru: 'Смотреть отзывы',
-          btn_en: 'See reviews',
-          path: '/reviews',
-          img: IMG_REVIEWS,
-          reverse: false,
-        },
-        {
-          title_ru: 'О нас',
-          title_en: 'About us',
-          sub_ru: 'Miroviriastudio — студия лекал, созданная швеями для швей. 8 лет с вами, 12 000 довольных клиентов.',
-          sub_en: 'Miroviriastudio — a pattern studio created by makers for makers. 8 years with you, 12 000 happy clients.',
-          btn_ru: 'Узнать больше',
-          btn_en: 'Learn more',
-          path: '/about',
-          img: IMG_ABOUT,
-          reverse: true,
-        },
-        {
-          title_ru: 'Статьи',
-          title_en: 'Articles',
-          sub_ru: 'Полезные материалы для тех, кто шьёт: выбор ткани, уход за изделиями, припуски и многое другое.',
-          sub_en: 'Useful materials for those who sew: fabric choice, garment care, seam allowances and more.',
-          btn_ru: 'Все статьи',
-          btn_en: 'All articles',
-          path: '/articles',
-          img: IMG_ARTICLES,
-          reverse: false,
-        },
-      ].map((s) => (
+      {promos.map((s) => (
         <section key={s.path} className="container py-16 md:py-20">
           <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${s.reverse ? 'md:[&>*:first-child]:order-2' : ''}`}>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-beige-soft">

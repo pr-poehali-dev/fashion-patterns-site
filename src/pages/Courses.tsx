@@ -3,9 +3,11 @@ import PageHero from '@/components/PageHero';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
+import { useSiteTexts } from '@/hooks/useSiteTexts';
 
 const Courses = () => {
-  const { t } = useApp();
+  const { t, lang } = useApp();
+  const { tx } = useSiteTexts();
 
   const lessons = [
     { ru: 'Знакомство с лекалами', en: 'Intro to patterns', desc_ru: 'Как читать и подготовить выкройку к работе.', desc_en: 'How to read and prepare a pattern.', level: t('Новичок', 'Beginner'), time: '25 мин' },
@@ -22,8 +24,8 @@ const Courses = () => {
     <Layout>
       <PageHero
         title={t('Курсы по шитью', 'Sewing courses')}
-        subtitle={t('Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.',
-                    'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.')}
+        subtitle={tx('courses_subtitle', 'Видеоуроки по пошиву одежды на основе наших лекал — от первого стежка до готового изделия.',
+                    'Video lessons on sewing clothes from our patterns — from the first stitch to a finished garment.', lang)}
       />
       <section className="container py-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {lessons.map((l, i) => (

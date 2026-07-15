@@ -1,3 +1,7 @@
 {
+  "upload_image": "https://functions.poehali.dev/02292f2b-6efb-4467-9164-3ab7817e1b8b",
+  "admin_auth": "https://functions.poehali.dev/d67fbe29-54d4-4dfe-83eb-f8b9361877bf",
+  "content": "https://functions.poehali.dev/fe8ff449-38af-405e-93aa-dc7841dfd63d",
+  "catalog": "https://functions.poehali.dev/99ef9f09-374e-48f9-8fee-d74de49eb992",
   "auth": "https://functions.poehali.dev/a22a76d8-e1fd-4623-81eb-b414fab3e003"
 }
