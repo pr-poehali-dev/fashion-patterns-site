@@ -58,8 +58,8 @@ const Header = () => {
         {/* Левая часть: логотип + соцсети */}
         <div className="flex items-center gap-5 shrink-0">
           <Link to="/" className="flex items-baseline">
-            <span className="text-2xl font-semibold tracking-tight">Miroviria</span>
-            <span className="text-xs font-medium tracking-tight">studio</span>
+            <span className="font-semibold tracking-tight mx-0 text-2xl">Miroviria</span>
+            <span className="font-medium tracking-tight text-base">  studio</span>
           </Link>
           <div className="hidden md:flex items-center gap-4">
             {socials.map((s) => (
